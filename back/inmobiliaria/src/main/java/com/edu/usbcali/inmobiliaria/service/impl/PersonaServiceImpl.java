@@ -1,6 +1,8 @@
 package com.edu.usbcali.inmobiliaria.service.impl;
 
 import com.edu.usbcali.inmobiliaria.dto.PersonaDTO;
+import com.edu.usbcali.inmobiliaria.dto.request.CreatePersonaRequest;
+import com.edu.usbcali.inmobiliaria.dto.response.CreatePersonaResponse;
 import com.edu.usbcali.inmobiliaria.mapper.PersonaMapper;
 import com.edu.usbcali.inmobiliaria.model.Persona;
 import com.edu.usbcali.inmobiliaria.respository.PersonaRepository;
@@ -30,11 +32,36 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
-    public PersonaDTO crearPersona(PersonaDTO personaDTO) {
-        // Convertir el DTO a entidad, guardar y devolver como DTO
-        Persona persona = PersonaMapper.dtoToModel(personaDTO);
-        Persona personaGuardada = personaRepository.save(persona);
-        return PersonaMapper.modelToDto(personaGuardada);
+    public CreatePersonaResponse crearPersona(CreatePersonaRequest createPersonaRequest) throws Exception {
+        // Validar que el request no sea nulo
+        if (createPersonaRequest == null) {
+            throw new Exception("La persona no puede ser nula.");
+        }
+
+        // Validar que el nombre no sea nulo ni vacío
+        if (createPersonaRequest.getNombre() == null || createPersonaRequest.getNombre().isBlank()) {
+            throw new Exception("El nombre no puede ser vacío.");
+        }
+
+        // Validar que el apellido no sea nulo ni vacío
+        if (createPersonaRequest.getApellido() == null || createPersonaRequest.getApellido().isBlank()) {
+            throw new Exception("El apellido no puede ser vacío.");
+        }
+
+        // Validar que el teléfono no sea nulo ni vacío
+        if (createPersonaRequest.getTelefono() == null || createPersonaRequest.getTelefono().isBlank()) {
+            throw new Exception("El teléfono no puede ser vacío.");
+        }
+
+        // Convertir de DTO a entidad (modelo)
+        Persona persona = PersonaMapper.createRequestToModel(createPersonaRequest);
+
+        // Guardar en base de datos
+        persona = personaRepository.save(persona);
+
+        // Convertir de modelo a respuesta DTO
+        CreatePersonaResponse response = PersonaMapper.modelToCreateResponse(persona);
+        return response;
     }
 
     @Override
@@ -44,7 +71,10 @@ public class PersonaServiceImpl implements PersonaService {
         personaExistente.setNombre(personaDTO.getNombre());
         personaExistente.setApellido(personaDTO.getApellido());
         personaExistente.setEmail(personaDTO.getEmail());
-        // Agrega otros campos según tu modelo
+        personaExistente.setTelefono(personaDTO.getTelefono());
+        personaExistente.setDireccion(personaDTO.getDireccion());
+        personaExistente.setCiudad(personaDTO.getCiudad());
+        personaExistente.setCodigoPostal(personaDTO.getCodigoPostal());
 
         Persona personaActualizada = personaRepository.save(personaExistente);
         return PersonaMapper.modelToDto(personaActualizada);

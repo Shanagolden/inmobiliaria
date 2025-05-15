@@ -1,6 +1,8 @@
 package com.edu.usbcali.inmobiliaria.controller;
 
 import com.edu.usbcali.inmobiliaria.dto.PersonaDTO;
+import com.edu.usbcali.inmobiliaria.dto.request.CreatePersonaRequest;
+import com.edu.usbcali.inmobiliaria.dto.response.CreatePersonaResponse;
 import com.edu.usbcali.inmobiliaria.model.Persona;
 import com.edu.usbcali.inmobiliaria.service.PersonaService;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +30,8 @@ public class PersonaController {
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<PersonaDTO> crearPersona(@RequestBody PersonaDTO personaDTO) {
-        PersonaDTO nuevaPersona = personaService.crearPersona(personaDTO);
+    public ResponseEntity<CreatePersonaResponse> crearPersona(@RequestBody CreatePersonaRequest createPersonaRequest) throws Exception {
+        CreatePersonaResponse nuevaPersona = personaService.crearPersona(createPersonaRequest);
         return new ResponseEntity<>(nuevaPersona, HttpStatus.CREATED);
     }
 
