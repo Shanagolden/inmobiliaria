@@ -14,14 +14,15 @@ public class VentaPropiedadMapper {
                 .fechaVenta(ventaPropiedad.getFechaVenta())
                 .precioVenta(ventaPropiedad.getPrecioVenta())
                 .comisionAsesor(ventaPropiedad.getComisionAsesor())
-                .propiedad(ventaPropiedad.getPropiedades().getDireccion() + ", " + ventaPropiedad.getPropiedades().getCiudad())
-                .cliente(ventaPropiedad.getCliente().getNombre() + " " + ventaPropiedad.getCliente().getApellido())
-                .asesor(ventaPropiedad.getAsesor().getNombre() + " " + ventaPropiedad.getAsesor().getApellido())
+                // Relaciones omitidas:
+                // .propiedad(...)
+                // .cliente(...)
+                // .asesor(...)
                 .build();
     }
 
-    public static VentaPropiedad requestToModel(CreateVentaPropiedadRequest request, Propiedad propiedad, 
-                                               Persona cliente, Persona asesor) {
+    public static VentaPropiedad requestToModel(CreateVentaPropiedadRequest request, Propiedad propiedad,
+                                                Persona cliente, Persona asesor) {
         return VentaPropiedad.builder()
                 .fechaVenta(request.getFechaVenta())
                 .precioVenta(request.getPrecioVenta())

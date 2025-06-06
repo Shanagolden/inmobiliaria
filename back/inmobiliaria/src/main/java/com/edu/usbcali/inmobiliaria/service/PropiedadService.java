@@ -9,7 +9,7 @@ import java.util.List;
 public interface PropiedadService {
     List<Propiedad> getAllPropiedades();
     PropiedadResponse getPropiedadPorId(Integer id);
-    PropiedadResponse crearPropiedad(CreatePropiedadRequest createPropiedadRequest) throws Exception;
+    PropiedadResponse createPropiedad(CreatePropiedadRequest createPropiedadRequest) throws Exception;
     PropiedadResponse actualizarPropiedad(Integer id, CreatePropiedadRequest createPropiedadRequest) throws Exception;
     void eliminarPropiedad(Integer id);
 }

@@ -19,31 +19,56 @@ public class PropiedadController {
     private final PropiedadService propiedadService;
 
     @GetMapping("/todas")
-    public List<Propiedad> buscarTodas() {
-        return propiedadService.getAllPropiedades();
+    public ResponseEntity<List<Propiedad>> buscarTodas() {
+        try {
+            List<Propiedad> propiedades = propiedadService.getAllPropiedades();
+            return new ResponseEntity<>(propiedades, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/buscar-por-id/{id}")
-    public ResponseEntity<PropiedadResponse> buscarPorId(@PathVariable Integer id) {
-        PropiedadResponse propiedadResponse = propiedadService.getPropiedadPorId(id);
-        return new ResponseEntity<>(propiedadResponse, HttpStatus.OK);
+    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
+        try {
+            PropiedadResponse propiedadResponse = propiedadService.getPropiedadPorId(id);
+            return new ResponseEntity<>(propiedadResponse, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<PropiedadResponse> crearPropiedad(@RequestBody CreatePropiedadRequest createPropiedadRequest) throws Exception {
-        PropiedadResponse nuevaPropiedad = propiedadService.crearPropiedad(createPropiedadRequest);
-        return new ResponseEntity<>(nuevaPropiedad, HttpStatus.CREATED);
+    public ResponseEntity<?> crearPropiedad(@RequestBody CreatePropiedadRequest createPropiedadRequest) {
+        try {
+            PropiedadResponse nuevaPropiedad = propiedadService.createPropiedad(createPropiedadRequest);
+            return new ResponseEntity<>(nuevaPropiedad, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<PropiedadResponse> actualizarPropiedad(@PathVariable Integer id, @RequestBody CreatePropiedadRequest createPropiedadRequest) throws Exception {
-        PropiedadResponse propiedadActualizada = propiedadService.actualizarPropiedad(id, createPropiedadRequest);
-        return new ResponseEntity<>(propiedadActualizada, HttpStatus.OK);
+    public ResponseEntity<?> actualizarPropiedad(@PathVariable Integer id, @RequestBody CreatePropiedadRequest createPropiedadRequest) {
+        try {
+            PropiedadResponse propiedadActualizada = propiedadService.actualizarPropiedad(id, createPropiedadRequest);
+            return new ResponseEntity<>(propiedadActualizada, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<Void> eliminarPropiedad(@PathVariable Integer id) {
-        propiedadService.eliminarPropiedad(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> eliminarPropiedad(@PathVariable Integer id) {
+        try {
+            propiedadService.eliminarPropiedad(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

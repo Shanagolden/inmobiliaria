@@ -7,12 +7,13 @@ import com.edu.usbcali.inmobiliaria.model.Persona;
 import com.edu.usbcali.inmobiliaria.model.Propiedad;
 import com.edu.usbcali.inmobiliaria.model.TipoPropiedad;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-
 public class PropiedadMapper {
 
     public static PropiedadResponse modelToResponse(Propiedad propiedad) {
+        if (propiedad == null) {
+            return null;
+        }
+
         return PropiedadResponse.builder()
                 .idPropiedad(propiedad.getIdPropiedad())
                 .direccion(propiedad.getDireccion())
@@ -23,15 +24,31 @@ public class PropiedadMapper {
                 .banos(propiedad.getBanos())
                 .precio(propiedad.getPrecio())
                 .fechaCreacion(propiedad.getFechaCreacion())
-                .propietario(propiedad.getPropietario().getNombre() + " " + propiedad.getPropietario().getApellido())
-                .asesor(propiedad.getAsesor().getNombre() + " " + propiedad.getAsesor().getApellido())
-                .tipoPropiedad(propiedad.getTipoPropiedad().getNombre())
-                .estadoPropiedad(propiedad.getEstadoPropiedad().getNombre())
+                .propietario(
+                        propiedad.getPropietario() == null ?
+                                null :
+                                propiedad.getPropietario().getNombre() + " " + propiedad.getPropietario().getApellido())
+                .asesor(
+                        propiedad.getAsesor() == null ?
+                                null :
+                                propiedad.getAsesor().getNombre() + " " + propiedad.getAsesor().getApellido())
+                .tipoPropiedad(
+                        propiedad.getTipoPropiedad() == null ?
+                                null :
+                                propiedad.getTipoPropiedad().getNombre())
+                .estadoPropiedad(
+                        propiedad.getEstadoPropiedad() == null ?
+                                null :
+                                propiedad.getEstadoPropiedad().getNombre())
                 .build();
     }
 
-    public static Propiedad requestToModel(CreatePropiedadRequest request, Persona propietario, Persona asesor, 
-                                          TipoPropiedad tipoPropiedad, EstadoPropiedad estadoPropiedad) {
+    public static Propiedad requestToModel(CreatePropiedadRequest request, Persona propietario, Persona asesor,
+                                           TipoPropiedad tipoPropiedad, EstadoPropiedad estadoPropiedad) {
+        if (request == null) {
+            return null;
+        }
+
         return Propiedad.builder()
                 .direccion(request.getDireccion())
                 .ciudad(request.getCiudad())
@@ -40,7 +57,6 @@ public class PropiedadMapper {
                 .habitaciones(request.getHabitaciones())
                 .banos(request.getBanos())
                 .precio(request.getPrecio())
-                .fechaCreacion(Timestamp.from(Instant.now()))
                 .propietario(propietario)
                 .asesor(asesor)
                 .tipoPropiedad(tipoPropiedad)

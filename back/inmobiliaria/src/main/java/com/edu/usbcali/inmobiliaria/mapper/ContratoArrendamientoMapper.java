@@ -16,18 +16,14 @@ public class ContratoArrendamientoMapper {
                 .fechaFin(contratoArrendamiento.getFechaFin())
                 .rentaMesual(contratoArrendamiento.getRentaMesual())
                 .deposito(contratoArrendamiento.getDeposito())
-                .estadoContrato(contratoArrendamiento.getEstadosContrato().getNombre())
-                .propiedad(contratoArrendamiento.getPropiedades().getDireccion() + ", " + contratoArrendamiento.getPropiedades().getCiudad())
-                .arrendatario(contratoArrendamiento.getArrendatario().getNombre() + " " + contratoArrendamiento.getArrendatario().getApellido())
-                .asesor(contratoArrendamiento.getAsesor().getNombre() + " " + contratoArrendamiento.getAsesor().getApellido())
                 .build();
     }
 
-    public static ContratoArrendamiento requestToModel(CreateContratoArrendamientoRequest request, 
-                                                      EstadoContrato estadoContrato, 
-                                                      Propiedad propiedad, 
-                                                      Persona arrendatario, 
-                                                      Persona asesor) {
+    public static ContratoArrendamiento requestToModel(CreateContratoArrendamientoRequest request,
+                                                       EstadoContrato estadoContrato,
+                                                       Propiedad propiedad,
+                                                       Persona arrendatario,
+                                                       Persona asesor) {
         return ContratoArrendamiento.builder()
                 .fechaInicio(request.getFechaInicio())
                 .fechaFin(request.getFechaFin())
